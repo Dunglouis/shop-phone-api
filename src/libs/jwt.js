@@ -1,0 +1,28 @@
+const jwt = require("jsonwebtoken");
+const config = require("config");
+
+exports.generateAccessToken = async (payload) => {
+  return await jwt.sign(
+    {
+      id: payload._id || payload.id,
+      email: payload.email,
+    },
+    config.get("app.jwtAccessKey"),
+    {
+      expiresIn: "30s",
+    }
+  );
+};
+
+exports.generateRefreshToken = async (payload) => {
+  return await jwt.sign(
+    {
+      id: payload._id || payload.id,
+      email: payload.email,
+    },
+    config.get("app.jwtRefreshKey"),
+    {
+      expiresIn: "1d",
+    }
+  );
+};
