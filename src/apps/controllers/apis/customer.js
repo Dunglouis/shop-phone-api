@@ -2,6 +2,10 @@ const CustomerModel = require("../../models/customer");
 const bcrypt = require("bcrypt");
 const { validationResult } = require("express-validator");
 const jwt = require("../../../libs/jwt");
+const {
+  deleteCustomerToken,
+  storeCustomerToken,
+} = require("../../../libs/token.service");
 
 exports.register = async (req, res) => {
   try {
@@ -87,6 +91,9 @@ exports.login = async (req, res) => {
         maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
       });
       const { password, ...others } = isEmail.toObject();
+
+      // insert token to DB
+      storeCustomerToken(others._id, accessToken, refreshToken);
       // return response
       return res.status(200).json({
         status: "success",
@@ -106,6 +113,14 @@ exports.login = async (req, res) => {
 
 exports.logout = async (req, res) => {
   try {
+    const { customer } = req;
+    // move token arriver Redis
+    // delete token in DB
+    deleteCustomerToken(customer.id);
+    return res.status(200).json({
+      status: "success",
+      message: "Logout successfully!",
+    });
   } catch (error) {
     return res.status(500).json({
       status: "error",
