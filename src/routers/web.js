@@ -112,7 +112,7 @@ router.get(
   OrderController.findByCustomerId
 );
 router.get("/customers/orders/:id", verifyAccessToken, OrderController.findOne);
-router.post(
+router.patch(
   "/customers/orders/:id/cancel",
   verifyAccessToken,
   OrderController.cancel
@@ -170,7 +170,11 @@ router.post(
   loginValidator,
   CustomerController.login
 );
-router.post("/auth/customers/logout", CustomerController.logout);
+router.post(
+  "/auth/customers/logout",
+  verifyAccessToken,
+  CustomerController.logout
+);
 router.post(
   "/auth/customers/refresh",
   verifyRefreshToken,

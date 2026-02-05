@@ -3,6 +3,7 @@ const config = require("config");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
+const redisClient = require("../common/init.redis");
 const app = express();
 
 // Bật CORS toàn cục
@@ -13,7 +14,7 @@ app.use(
   cors({
     origin: "http://localhost:3000", // chỉ cho phép React app gọi
     methods: ["GET", "POST", "PUT", "DELETE"],
-  })
+  }),
 );
 
 // Các middleware khác nếu có (body-parser, json, ...)
@@ -21,7 +22,7 @@ app.use(express.json());
 app.use(bodyParser.json());
 app.use(cookieParser());
 
-// Import routes sau khi bật CORS
+// Import routes
 app.use(config.get("app.prefixApiVersion"), require("../routers/web"));
 
 module.exports = app;

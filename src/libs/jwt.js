@@ -9,7 +9,7 @@ exports.generateAccessToken = async (payload) => {
     },
     config.get("app.jwtAccessKey"),
     {
-      expiresIn: "30s",
+      expiresIn: "1d",
     }
   );
 };
