@@ -10,6 +10,8 @@ const CustomerController = require("../apps/controllers/apis/customer");
 const UserController = require("../apps/controllers/apis/auth");
 const AdminController = require("../apps/controllers/apis/orderAdmin");
 
+const TestController = require("../test/testController");
+
 // Import Middlewares
 const uploadMiddlwares = require("../apps/middlewares/upload");
 const { registerValidator } = require("../apps/middlewares/customerValidator");
@@ -61,13 +63,13 @@ router.post(
   "/categories/create",
   categoryRules,
   categoryValidator,
-  CategoryController.create
+  CategoryController.create,
 );
 router.post(
   "/categories/update/:id",
   categoryRules,
   categoryValidator,
-  CategoryController.update
+  CategoryController.update,
 );
 router.get("/categories/delete/:id", CategoryController.delete);
 
@@ -79,14 +81,14 @@ router.post(
   uploadMiddlwares.single("image"),
   productRules,
   productValidator,
-  ProductController.create
+  ProductController.create,
 );
 router.patch(
   "/products/update/:id",
   uploadMiddlwares.single("image"),
   productRules,
   productValidator,
-  ProductController.update
+  ProductController.update,
 );
 router.get("/products/delete/:id", ProductController.delete);
 router.get("/products/:id/comments", CommentController.findByProductId);
@@ -95,7 +97,7 @@ router.post(
   uploadMiddlwares.single("image"),
   commentRules,
   commentValidator,
-  CommentController.create
+  CommentController.create,
 );
 
 // api orders
@@ -104,18 +106,18 @@ router.post(
   verifyCustomer,
   orderRules,
   orderValidator,
-  OrderController.create
+  OrderController.create,
 );
 router.get(
   "/customers/orders",
   verifyAccessToken,
-  OrderController.findByCustomerId
+  OrderController.findByCustomerId,
 );
 router.get("/customers/orders/:id", verifyAccessToken, OrderController.findOne);
 router.patch(
   "/customers/orders/:id/cancel",
   verifyAccessToken,
-  OrderController.cancel
+  OrderController.cancel,
 );
 
 //api admin orders
@@ -126,12 +128,12 @@ router.patch(
   verifyAccessToken,
   updateStatusRules,
   updateStatusValidator,
-  AdminController.updateSatus
+  AdminController.updateSatus,
 );
 router.get(
   "/admin/orders/delete/:id",
   verifyAccessToken,
-  AdminController.delete
+  AdminController.delete,
 );
 
 // api comments
@@ -143,18 +145,18 @@ router.post(
   "/auth/users/register",
   userRules,
   userValidator,
-  UserController.register
+  UserController.register,
 );
 router.post(
   "/auth/users/login",
   authRules,
   loginValidator,
-  UserController.login
+  UserController.login,
 );
 router.post(
   "/auth/users/refresh",
   verifyRefreshTokenUser,
-  UserController.refreshToken
+  UserController.refreshToken,
 );
 router.get("/auth/users/me", verifyAccessTokenUser, UserController.getMe);
 
@@ -162,24 +164,28 @@ router.get("/auth/users/me", verifyAccessTokenUser, UserController.getMe);
 router.post(
   "/auth/customers/register",
   registerValidator,
-  CustomerController.register
+  CustomerController.register,
 );
 router.post(
   "/auth/customers/login",
   authRules,
   loginValidator,
-  CustomerController.login
+  CustomerController.login,
 );
 router.post(
   "/auth/customers/logout",
   verifyAccessToken,
-  CustomerController.logout
+  CustomerController.logout,
 );
 router.post(
   "/auth/customers/refresh",
   verifyRefreshToken,
-  CustomerController.refeshToken
+  CustomerController.refeshToken,
 );
 router.get("/auth/customers/me", verifyAccessToken, CustomerController.getMe);
+
+router.get("/cache/products/basic", TestController.cacheBasic);
+router.get("/cache/products/advanced", TestController.cacheAdvanced);
+router.get("/cache/products/redis", TestController.cacheRedis);
 
 module.exports = router;

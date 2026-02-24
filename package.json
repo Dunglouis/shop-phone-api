@@ -25,7 +25,9 @@
     "leo-profanity": "^1.8.0",
     "mongoose": "^6.13.8",
     "multer": "^2.0.2",
+    "node-cache": "^5.1.2",
     "nodemailer": "^7.0.11",
+    "perf_hooks": "^0.0.1",
     "redis": "^5.10.0"
   }
 }
